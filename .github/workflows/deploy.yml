@@ -1,0 +1,75 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: jiemian/package-lock.json
+          
+      - name: Install dependencies
+        run: cd jiemian && npm ci
+        
+      - name: Build React app
+        run: cd jiemian && npm run build
+        
+      - name: Copy static files to dist
+        run: |
+          cp galaxy.html jiemian/dist/
+          cp love.js jiemian/dist/
+          cp spiralRibbon.js jiemian/dist/
+          cp three.module.js jiemian/dist/
+          cp heart_3.obj jiemian/dist/
+          cp heart_2.mtl jiemian/dist/
+          cp yasuojszip.min.js jiemian/dist/
+          cp CopyShader.js jiemian/dist/
+          cp EffectComposer.js jiemian/dist/
+          cp LuminosityHighPassShader.js jiemian/dist/
+          cp MaskPass.js jiemian/dist/
+          cp OBJLoader.js jiemian/dist/
+          cp OrbitControls.js jiemian/dist/
+          cp Pass.js jiemian/dist/
+          cp RenderPass.js jiemian/dist/
+          cp ShaderPass.js jiemian/dist/
+          cp UnrealBloomPass.js jiemian/dist/
+          cp Main.zip jiemian/dist/ 2>/dev/null || true
+          
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+        
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: 'jiemian/dist'
+          
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

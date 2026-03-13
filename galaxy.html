@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>生日快乐 - 3D粒子场景</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tangerine:wght@400;700&family=Noto+Serif+SC:wght@300;400;500&family=Ma+Shan+Zheng&family=Long+Cang&display=swap" rel="stylesheet">
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "./three.module.js",
+                "three/examples/jsm/OrbitControls.js": "./OrbitControls.js",
+                "three/examples/jsm/OBJLoader.js": "./OBJLoader.js",
+                "three/examples/jsm/EffectComposer.js": "./EffectComposer.js",
+                "three/examples/jsm/RenderPass.js": "./RenderPass.js",
+                "three/examples/jsm/UnrealBloomPass.js": "./UnrealBloomPass.js",
+                "three/examples/jsm/ShaderPass.js": "./ShaderPass.js",
+                "three/examples/jsm/Pass.js": "./Pass.js",
+                "three/examples/jsm/shaders/CopyShader.js": "./CopyShader.js",
+                "three/examples/jsm/shaders/LuminosityHighPassShader.js": "./LuminosityHighPassShader.js"
+            }
+        }
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            overflow: hidden;
+            background-color: #000;
+            font-family: Arial, sans-serif;
+        }
+        
+        #sceneContainer {
+            width: 100vw;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+        
+        #loading {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 24px;
+            text-align: center;
+            z-index: 1000;
+        }
+        
+        .loading-spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid #fff;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div id="loading">
+        <div class="loading-spinner"></div>
+        <div>加载中...</div>
+    </div>
+    <div id="sceneContainer"></div>
+    
+    <!-- JSZip 库（全局变量） -->
+    <script src="./yasuojszip.min.js"></script>
+    
+    <script type="module">
+        import { startBirthdayScene } from './love.js';
+        
+        // 等待字体加载完成后再启动场景
+        async function loadFonts() {
+            try {
+                await document.fonts.load('140px Ma Shan Zheng');
+                await document.fonts.load('140px Tangerine');
+                console.log('字体加载完成');
+            } catch (e) {
+                console.log('字体加载失败，使用默认字体', e);
+            }
+            
+            const loading = document.getElementById('loading');
+            if (loading) {
+                loading.style.display = 'none';
+            }
+            
+            // 启动生日场景
+            startBirthdayScene();
+        }
+        
+        loadFonts();
+    </script>
+</body>
+</html>
