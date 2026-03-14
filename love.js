@@ -152,6 +152,7 @@ function init() {
     _0x3cbe5a.scale.set(0.8, 0.8, 0.8);
     _0x3cbe5a.position.set(0, 0, 0.2);
     _0x3cbe5a.rotation.y = Math.PI;
+    _0x3cbe5a.rotation.x = Math.PI;
     _0x3cbe5a.updateMatrixWorld(true);
     const _0x3b59ab = [],
       _0x268b78 = [];
