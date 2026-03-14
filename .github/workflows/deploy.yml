@@ -53,6 +53,7 @@ jobs:
           cp RenderPass.js jiemian/dist/
           cp ShaderPass.js jiemian/dist/
           cp UnrealBloomPass.js jiemian/dist/
+          cp -r music jiemian/dist/ 2>/dev/null || echo "music folder not found"
           if [ -f Main.zip ]; then
             echo "Copying Main.zip..."
             cp Main.zip jiemian/dist/
